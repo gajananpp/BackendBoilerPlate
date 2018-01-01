@@ -1,6 +1,6 @@
 {
   "name": "DevopsBackend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "repository": "git@github.com:digitamizers/DevopsBackend.git",
   "author": "Arjun Hemrajani <lomkju@gmail.com>",
