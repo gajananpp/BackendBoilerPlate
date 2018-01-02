@@ -11,10 +11,11 @@ pipeline {
         sh 'docker build -t $DOCKER_SERVER/$(cat NAME):$(cat VERSION) .'
       }
     }
-    stage 'Docker push'
-  docker.withRegistry('https://1234567890.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:demo-ecr-credentials') {
-    docker.image('demo').push('latest')
-  }
+    stage('Docker push') {
+      docker.withRegistry('https://1234567890.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:demo-ecr-credentials') {
+        docker.image('demo').push('latest')
+      }
+    }
   }
   environment {
     KUBE_URL = credentials('KUBE_URL')
