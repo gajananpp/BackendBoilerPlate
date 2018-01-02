@@ -14,7 +14,8 @@ pipeline {
     stage ('Docker push') {
       steps {
         docker.withRegistry('https://838855741485.dkr.ecr.ap-south-1.amazonaws.com', 'ecr:ap-south-1:demo-ecr-credentials') {
-        docker.image('demo').push('latest')
+         docker.image('demo').push('latest')
+        }
       }
     }
   }
