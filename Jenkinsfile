@@ -1,4 +1,4 @@
-pipeline {
+module.exports = `pipeline {
   agent any
   stages {
     stage('Export Version & Name') {
@@ -13,7 +13,7 @@ pipeline {
     }
     stage('SonarQube Analysis') {
       steps {
-        sh '$SONAR_SCANNER_HOME/bin/sonar-scanner -Dsonar.projectKey=${JOB_NAME%%/*} -Dsonar.projectName=${JOB_NAME%%/*} -Dsonar.projectVersion=$(cat VERSION) -Dsonar.sources=. -Dsonar.host.url=$SONARQUBE_SERVER -Dsonar.login=$SONARQUBE_USERNAME -Dsonar.password=$SONARQUBE_PASSWORD'
+        sh '$SONAR_SCANNER_HOME/bin/sonar-scanner -Dsonar.projectKey=\${JOB_NAME%%/*} -Dsonar.projectName=\${JOB_NAME%%/*} -Dsonar.projectVersion=$(cat VERSION) -Dsonar.sources=. -Dsonar.host.url=$SONARQUBE_SERVER -Dsonar.login=$SONARQUBE_USERNAME -Dsonar.password=$SONARQUBE_PASSWORD'
       }
     }
     stage('Push Image') {
@@ -24,7 +24,7 @@ pipeline {
     }
     stage('Deploy') {
       steps {
-        sh '''curl --fail --insecure --request "POST" --url "api.speedops.com/v1/deployer/kubernetes/deploy" --header "content-type: application/json" --data '{"deployment":{"name":"'"$(cat NAME)"'","version":"'"$(cat VERSION)"'","docker_server":"'"$DOCKER_SERVER"'"},"config":{"host":"'"$KUBE_URL"'","token":"'"$KUBE_TOKEN"'"}}'
+        sh '''curl --fail --insecure --request "POST" --url "api.speedops.com/v1/deployer/kubernetes/deploy" --header "content-type: application/json" --data \'{"deployment":{"name":"\'"$(cat NAME)"\'","version":"\'"$(cat VERSION)"\'","docker_server":"\'"$DOCKER_SERVER"\'"},"config":{"host":"\'"$KUBE_URL"\'","token":"\'"$KUBE_TOKEN"\'"}}\'
 '''
       }
     }
@@ -40,4 +40,4 @@ pipeline {
     SONARQUBE_PASSWORD = credentials('SONARQUBE_PASSWORD')
     SONAR_SCANNER_HOME = tool 'SonarQube Scanner'
   }
-}
+}`
